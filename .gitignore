@@ -7,5 +7,6 @@ src/*/*/__pycache__
 
 src/cache
 src/temp
+src/epicData
 
 src/*.gif
