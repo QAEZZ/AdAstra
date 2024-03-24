@@ -1,0 +1,6 @@
+discord.py
+colorama
+asyncio
+requests
+Pillow
+discord.py-pagination

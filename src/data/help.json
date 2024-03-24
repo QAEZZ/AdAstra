@@ -1,0 +1,14 @@
+{
+    "help": {
+      "description": "Display a list of available commands or get help for a specific command.",
+      "usage": "help [command] <-- not yet implemented (Im too lazy)"
+    },
+    "info": {
+      "description": "Display information about the client.",
+      "usage": "info"
+    },
+    "latency": {
+      "description": "Show the client's ping in milliseconds.",
+      "usage": "latency"
+    }
+  }
