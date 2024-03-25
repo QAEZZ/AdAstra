@@ -1,11 +1,14 @@
 #!/usr/bin/env python3
 
 import os
+import traceback
+
 import discord
 from discord.ext import commands
 from discord.ext.commands import Context
-from constants import INTENTS, COG_ACCESS, logger, EMBED_COLOR, TOKEN, PREFIX
-from helpers import error_embed
+
+from constants import COG_ACCESS, EMBED_COLOR, INTENTS, PREFIX, TOKEN, logger
+from helpers import cogs
 
 
 class Client(commands.Bot):
@@ -36,6 +39,7 @@ class Client(commands.Bot):
                         logger.success(f"Loaded cogs.{directory}.{filename}")
                     except Exception as e:
                         logger.error(str(e))
+                        traceback.print_exc()
 
     async def on_ready(self) -> None:
         """Runs once the client is connected to the Discord Gateway."""

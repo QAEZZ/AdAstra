@@ -4,3 +4,7 @@ asyncio
 requests
 Pillow
 discord.py-pagination
+asyncpraw
+pyongc
+twirl
+selenium

@@ -1,7 +1,7 @@
 {
     "help": {
       "description": "Display a list of available commands or get help for a specific command.",
-      "usage": "help [command] <-- not yet implemented (Im too lazy)"
+      "usage": "help [command]"
     },
     "info": {
       "description": "Display information about the client.",
@@ -10,5 +10,61 @@
     "latency": {
       "description": "Show the client's ping in milliseconds.",
       "usage": "latency"
+    },
+    "aurora": {
+      "description": "Get the current or future forecast of north or south auroras.\n\n**Default:** `aurora future north`\n\n **Options:**\n- future\n- current",
+      "usage": "aurora [option] [north or south]",
+      "footer": "Forecast data provided by NOAA's SWPC (Space Weather Prediction Center)."
+    },
+    "epic": {
+      "description": "Get an interactive carousel of images of Earth taken by NASA's EPIC camera onboard the NOAA DSCOVER spacecraft.\n\n**Default:** None, user must define each argument.\n**Example:** `epic natural 2021 02 12`\n\n**Collections:**\n- natural\n- enhanced",
+      "usage": "epic <collection> <yyyy> <mm> <dd>",
+      "footer": "Data provided by the Goddard Space Flight Center."
+    },
+    "lasco": {
+      "description": "Get an image or GIF from coronagraphs mounted on the joint NASA/ESA SOHO (Solar and Heliospheric Observatory) spacecraft. There are two coronagraphs mounted on the SOHO spacecraft, C2 (red) and C3 (blue).\n\n**Default:** `lasco animation c3`\n\n**Options:**\n- animation, shows a GIF.\n- latest, shows a JPG of the latest image.",
+      "usage": "lasco [option] [c3 or c2]",
+      "footer": "Data provided by NOAA's SWPC (Space Weather Prediction Center).",
+      "image": "https://lasco-www.nrl.navy.mil/images/example.gif"
+    },
+    "rtws": {
+      "description": "Get the real-time solar wind speed.",
+      "usage": "rtws",
+      "footer": "Data provided by NOAA's SWPC (Space Weather Prediction Center)."
+    },
+    "suvi": {
+      "description": "Get an image or GIF from GOES 16's extreme ultraviolet (EUV) telescope called the Solar Ultraviolet Imager (SUVI).\n\n**Default:** `suvi animation 195`\n\n**Options:**\n- animation\n- latest\n\n**Composites:**\n- 094\n- 131\n- 171\n- 195\n- 284\n- 304\n- map",
+      "usage": "suvi [option] [composite]",
+      "footer":"Data provided by NOAA's SWPC (Space Weather Prediction Center)."
+    },
+    "lookup": {
+      "description": "Get an image of a DSO (Primarily NGC for name look ups, most if not all Messier also supported. Other catalog names *might* work.), or really any coordinate within the second Digitized Sky Survey (DSS2).\n\n**Default:** None, the user must define all arguments.\n\n**Right Ascension (RA):**\n- RA Hours decimal form (0.000)\n- H:M:S format\n\n**Declination (Dec):**\n- Decimal degrees format (0.000)\n- ±D:M:S format\n\n**Examples:**\n- `lookup name 5 ngc7000`\n- `lookup coords 3 3:47:24 +24:7:0`\n- `lookup coords 3 3.79 24.1166667`\nFor coords, you can intermix formats, the RA can be H:M:S while the Dec can be decimal form, and so on.\n\n**Usage**\n```\n;lookup name <fov number> <name>\n```",
+      "usage": "lookup coords <fov number> <ra> <dec>",
+      "footer": "Images and data provided by sky-map.org and OpenNGC (PyOngc)."
+    },
+    "messier": {
+      "description": "Get an image and information on a specified Messier deep space object (DSO).\n\n**Default:** None, user must define all arguments.",
+      "usage": "messier <number 1-110>",
+      "footer": "Data provided by starlust.org, NASA, and messierobjects.com."
+    },
+    "post": {
+      "description": "Get a random hot post from a space-related subreddit.\n\n**Default:** `post astrophotography`\n\n**Subreddits:**\n- astrophotography\n- spaceporn\n- space",
+      "usage": "post [subreddit]",
+      "footer": "Posts provided by Reddit, post content provided by various sources."
+    },
+    "search": {
+      "description": "A search engine that searches through various NASA media assets.\n\n**Default:** None, user must provide all arguments.\n\n**Media Type:**\n- image\n- video\n- audio",
+      "usage": "search <media type> <query>",
+      "footer": "Search results provided by NASA."
+    },
+    "marsweather": {
+      "description": "Get the latest weather on Mars; taken by the Curiosity Rover.\n\n**Alias:** `mw`.",
+      "usage": "marsweather",
+      "footer": "Data provided by NASA."
+    },
+    "apod": {
+      "description": "Get NASA's Astronomy Photo of The Day.",
+      "usage": "apod",
+      "footer": "Data provided by NASA."
     }
   }

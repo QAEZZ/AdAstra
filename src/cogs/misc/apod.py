@@ -1,9 +1,11 @@
-import discord
-from discord.ext import commands
 import json
+
+import discord
 import requests
+from discord.ext import commands
+
+from constants import EMBED_COLOR, TOKEN
 from helpers import error_embed
-from constants import TOKEN, EMBED_COLOR
 
 
 class MiscApod(commands.Cog):
@@ -20,14 +22,20 @@ class MiscApod(commands.Cog):
             title = data["title"]
             desc = data["explanation"]
             date = data["date"]
-            hd_img = data["hdurl"]
+            media_url = data["url"]
+            
             
             embed: discord.Embed = discord.Embed(
                 title=f"{title} **•** *{date}*",
                 description=desc,
                 color=EMBED_COLOR
             )
-            embed.set_image(url=hd_img)
+            
+            if "youtube" in media_url:
+                embed.url = media_url
+                embed.set_image(url=f"https://img.youtube.com/vi/{media_url.split('/')[-1].replace('?rel=0', '')}/sd1.jpg")
+            else:
+                embed.set_image(url=media_url)
             
             await ctx.reply(embed=embed)
             

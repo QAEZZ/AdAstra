@@ -1,8 +1,9 @@
 import json
 
 import discord
-from constants import EMBED_COLOR, LOGO, PREFIX, HELP_DESCRIPTION
 from discord.ext import commands
+
+from constants import EMBED_COLOR, HELP_DESCRIPTION, LOGO, PREFIX
 from helpers import error_embed
 
 
@@ -14,7 +15,7 @@ class CoreHelp(commands.Cog):
     async def help(self, ctx, command_name = None):
         try:
             embed: discord.Embed = discord.Embed(
-                title="Skid(c) Help",
+                title="Ad Astra — To the Stars",
                 color=EMBED_COLOR,
                 description=HELP_DESCRIPTION,
             )
@@ -31,6 +32,13 @@ class CoreHelp(commands.Cog):
                         embed.add_field(
                             name="Usage", value=f"```{PREFIX}{command_info['usage']}```"
                         )
+                        
+                        if "footer" in command_info:
+                            embed.set_footer(text=command_info["footer"])
+
+                        if "image" in command_info:
+                            embed.set_image(url=command_info["image"])
+
 
             await ctx.reply(embed=embed)
 

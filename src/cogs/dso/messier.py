@@ -1,10 +1,12 @@
+import json
+
 import discord
 from discord.ext import commands
-import json
+
 from helpers import error_embed
 
 
-class MiscMessier(commands.Cog):
+class DsoMessier(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
@@ -47,4 +49,4 @@ class MiscMessier(commands.Cog):
 
 
 async def setup(bot):
-    await bot.add_cog(MiscMessier(bot))
+    await bot.add_cog(DsoMessier(bot))

@@ -20,52 +20,51 @@ from constants import EMBED_COLOR, TOKEN, logger
 from helpers import error_embed, images_to_gif, uid
 
 
-class EarthAurora(commands.Cog):
+class SunSuvi(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
     @commands.command()
-    async def aurora(self, ctx, option="future", direction="north"):
+    async def suvi(self, ctx, option="animation", composite="195"):
         try:
-            if option.lower() not in ["future", "current"]:
-                await error_embed.send(ctx, "Options are 'future' and 'current'.")
+            if option.lower() not in ["animation", "latest"]:
+                await error_embed.send(ctx, "Options are 'animation' and 'latest'.")
                 return
-
-            if direction.lower() not in ["north", "south"]:
-                await error_embed.send(
-                    ctx, "Auroras only happen north and south! Not E & W..."
-                )
+            
+            composite_types = ["094", "131", "171", "195", "284", "304", "map"]
+            if composite.lower() not in composite_types:
+                await error_embed.send(ctx, f"The only composite types allowed are:\n - " + "\n - ".join(composite_types) + f"\n\nYou entered, '{composite.lower()}'.")
                 return
 
             match option:
-                case "current":
-                    await self._send_current(ctx, direction)
+                case "latest":
+                    await self._send_latest(ctx, composite.lower())
                 case _:
-                    await self._send_future(ctx, direction)
+                    await self._send_animation(ctx, composite.lower())
 
         except Exception as e:
             await error_embed.send(ctx, e, False, True)
 
-    async def _send_current(self, ctx, direction) -> None:
+    async def _send_latest(self, ctx, composite) -> None:
         why_does_discord_cache_this_image_anyways_here_is_a_uid_to_bypass_the_cache = (
             uid.gen()
         )
         embed: discord.Embed = discord.Embed(
-            title="Aurora Forecast for the Next Hour.", color=EMBED_COLOR
+            title=f"Latest EUV Image of the Sun.", color=EMBED_COLOR
         )
         embed.set_image(
-            url=f"https://services.swpc.noaa.gov/images/animations/ovation/{direction.lower()}/latest.jpg?{why_does_discord_cache_this_image_anyways_here_is_a_uid_to_bypass_the_cache}={why_does_discord_cache_this_image_anyways_here_is_a_uid_to_bypass_the_cache}"
+            url=f"https://services.swpc.noaa.gov/images/animations/suvi/primary/{composite}/latest.png?{why_does_discord_cache_this_image_anyways_here_is_a_uid_to_bypass_the_cache}={why_does_discord_cache_this_image_anyways_here_is_a_uid_to_bypass_the_cache}"
         )
         await ctx.reply(embed=embed)
 
-    async def _send_future(self, ctx, direction) -> None:
+    async def _send_animation(self, ctx, composite) -> None:
         embed = discord.Embed(title="Checking cache for GIF.", color=EMBED_COLOR)
         msg = await ctx.reply(embed=embed)
 
         Path(os.path.abspath("./cache")).mkdir(exist_ok=True)
 
         cached_gif_dir = os.path.abspath("./cache")
-        cached_gif_pattern = f"swpc_aurora_{direction.lower()}_future_forecast.gif"
+        cached_gif_pattern = f"swpc_suvi_{composite}_animation.gif"
         cached_gifs = glob.glob(os.path.join(cached_gif_dir, cached_gif_pattern))
 
         if cached_gifs:
@@ -88,11 +87,12 @@ class EarthAurora(commands.Cog):
                 await msg.edit(embed=embed)
 
                 file = discord.File(
-                    cached_gif_path, filename="aurora_future_forecast.gif"
+                    cached_gif_path, filename=f"suvi_{composite}_animation.gif"
                 )
-                embed.title = "Aurora Future Forecast"
+                embed.title = f"Animation of the Sun's EUV (Comp. {composite})."
+                embed.url = f"https://services.swpc.noaa.gov/images/animations/suvi/primary/{composite}/latest.png"
                 embed.description = None
-                embed.set_image(url="attachment://aurora_future_forecast.gif")
+                embed.set_image(url=f"attachment://suvi_{composite}_animation.gif")
                 embed.set_footer(
                     text=f"This GIF is cached. It was created at {datetime.fromtimestamp(creation_time, timezone.utc).strftime('%Y-%m-%d %H:%M:%S')} UTC. GIFs refresh every 2 hours."
                 )
@@ -101,7 +101,7 @@ class EarthAurora(commands.Cog):
                 return
 
         resp = requests.get(
-            f"https://services.swpc.noaa.gov/products/animations/ovation_{direction.lower()}_24h.json"
+            f"https://services.swpc.noaa.gov/products/animations/suvi-primary-{composite}.json"
         )
         if not resp.ok:
             await error_embed.send(
@@ -112,19 +112,19 @@ class EarthAurora(commands.Cog):
         data = json.loads(resp.text)
 
         _uid = uid.gen(5)
-        images_path = os.path.abspath(f"./temp/aurora")
+        images_path = os.path.abspath(f"./temp/suvi/{composite}")
 
         Path(images_path).mkdir(parents=True, exist_ok=True)
 
         embed.title = "Past 2 hours, creating new GIF."
         await msg.edit(embed=embed)
-
         await images_to_gif.download_images(
             data,
             images_path,
             _uid,
             f"https://services.swpc.noaa.gov",
             "jpg",
+            1,
             send_progress=True,
             embed=embed,
             msg=msg,
@@ -132,7 +132,7 @@ class EarthAurora(commands.Cog):
             ctx=ctx,
         )
 
-        file_name = f"swpc_aurora_{direction.lower()}_future_forecast_{_uid}.gif"
+        file_name = f"swpc_suvi_{composite}_animation_{_uid}.gif"
 
         await images_to_gif.compile_images_to_gif(
             images_path,
@@ -144,7 +144,8 @@ class EarthAurora(commands.Cog):
             msg=msg,
         )
 
-        embed = discord.Embed(title="Aurora Future Forecast", color=EMBED_COLOR)
+        embed = discord.Embed(title=f"Animation of the Sun's EUV (Comp. {composite}).", color=EMBED_COLOR)
+        embed.url = f"https://services.swpc.noaa.gov/images/animations/suvi/primary/{composite}/latest.png"
 
         embed.set_image(url=f"attachment://{file_name}")
         await ctx.reply(file=discord.File(file_name), embed=embed)
@@ -152,12 +153,12 @@ class EarthAurora(commands.Cog):
 
         ## Clean-up and caching
         shutil.move(
-            os.path.abspath(f"./{file_name}"), os.path.abspath(f"./cache/swpc_aurora_{direction.lower()}_future_forecast.gif")
+            os.path.abspath(f"./{file_name}"), os.path.abspath(f"./cache/swpc_suvi_{composite}_animation.gif")
         )
 
-        for image in glob.glob(f"{os.path.abspath('./temp/aurora')}/*-{_uid}.jpg"):
+        for image in glob.glob(f"{os.path.abspath(f'./temp/suvi/')}/*-{_uid}.jpg"):
             os.remove(image)
 
 
 async def setup(bot):
-    await bot.add_cog(EarthAurora(bot))
+    await bot.add_cog(SunSuvi(bot))

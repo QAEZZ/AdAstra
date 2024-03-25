@@ -1,4 +1,4 @@
 # Ad Astra
 
 To-do:
-- [ ] Have EPIC store to temp dir 
+- [x] Have EPIC store to temp dir 

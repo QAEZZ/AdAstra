@@ -1,6 +1,9 @@
-from discord import Embed, Color
-from constants import LOGO, logger
 import traceback
+
+from discord import Color, Embed
+
+from constants import LOGO, logger
+
 
 async def send(ctx, e, print_error: bool = False, print_traceback: bool = False):
     if print_error: logger.error(e)

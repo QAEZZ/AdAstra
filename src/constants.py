@@ -1,4 +1,5 @@
 import discord
+
 from logger import Logger
 
 logger: Logger = Logger("Ad Astra")
@@ -24,11 +25,34 @@ def TOKEN(token_name) -> str:
         return f.read()
 
 
-HELP_DESCRIPTION = """
+HELP_DESCRIPTION = f"""
 **Client Tools**
-`help`, this
-`latency`, get ping in ms
-`info`, get some client info
+ `help`    this
+ `latency` get ping in ms
+ `info`    get some client info
 
-More soon:tm:
+**Earth-related Commands**
+ `aurora`  get aurora forecast
+ `epic`    get EPIC images
+
+**Sun-related Commands**
+ `lasco`   get LASCO CX images
+ `rtws`    get solar wind speed
+ `suvi`    get Sol's EUV images
+ 
+**DSO-related Commands**
+ `lookup`  get an image of a DSO
+ `messier` get info on a Messier DSO
+
+**Miscellaneous Commands**
+ `apod`    get astronomy photo of the day
+ `marsweather` get latest weater on Mars
+ `post`    get a post from a subreddit
+ `search`  NASA search engine
+ 
+**NOTE:**
+  Square brackets indicate optional arguments.
+  Angled brackets indicate required arguments.
+
+*Use `{PREFIX}help [command name]` to get more info on a command, such as arguments required.*
 """

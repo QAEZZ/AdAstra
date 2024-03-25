@@ -1,14 +1,17 @@
-import discord
-from discord.ext import commands
-import os
+import glob
 import json
+import os
 import shutil
-import requests
-import time
 from datetime import date
+from pathlib import Path
+
+import discord
+import requests
+from discord.ext import commands
 from Paginator import Simple as Paginator
-from constants import TOKEN, EMBED_COLOR
-from helpers import error_embed
+
+from constants import EMBED_COLOR, TOKEN
+from helpers import error_embed, uid
 
 todays_date = date.today()
 current_year, current_month, current_day = (
@@ -23,7 +26,7 @@ class EarthEpic(commands.Cog):
         self.bot = bot
 
     @commands.command()
-    async def epic(self, ctx, collection=None, year=None, month=None, day=None):
+    async def epic(self, ctx, collection="MISSING", year="MISSING", month="MISSING", day="MISSING"):
         try:
             try:
                 collection = collection.lower()
@@ -56,18 +59,21 @@ class EarthEpic(commands.Cog):
 
             url = f"https://epic.gsfc.nasa.gov/api/{collection}/date/{year}-{month:02d}-{day:02d}?api_key={TOKEN('nasa')}"
 
-            data = json.loads(requests.get(url).text)
+            resp = requests.get(url)
+            if not resp.ok:
+                await error_embed.send(ctx, "Couldn't reach out to GSFC.")
+                return
+            
+            data = json.loads(resp.text)
 
             loading_em = discord.Embed(title="Loading...", color=EMBED_COLOR)
             loading_msg = await ctx.send(embed=loading_em)
+            
+            epic_data_directory = os.path.abspath("./temp/epic_data")
 
-            try:
-                shutil.rmtree("./epicData")
-            except FileNotFoundError:
-                pass
-            time.sleep(1)
-            os.mkdir("./epicData")
+            Path(epic_data_directory).mkdir(parents=True, exist_ok=True)
 
+            _uid = uid.gen(5)
             for idx, item in enumerate(data, start=1):
                 image = item["image"]
                 caption = item["caption"]
@@ -75,14 +81,14 @@ class EarthEpic(commands.Cog):
                 image_url = f"https://epic.gsfc.nasa.gov/archive/{collection}/{year}/{month:02d}/{day:02d}/jpg/{image}.jpg"
 
                 data_to_dump = {"CAPTION": caption, "DATE": date, "imageUrl": image_url}
-                with open(f"./epicData/e{idx}.json", "w") as f:
+                with open(f"{epic_data_directory}/e{idx}-{_uid}.json", "w") as f:
                     json.dump(data_to_dump, f, indent=4)
 
             await loading_msg.delete()
 
             pages = []
             for i in range(15, 0, -1):
-                response_path = f"./epicData/e{i}.json"
+                response_path = f"{epic_data_directory}/e{i}-{_uid}.json"
                 if os.path.exists(response_path):
                     response_data = json.load(open(response_path))
                     date = response_data["DATE"]
@@ -96,11 +102,15 @@ class EarthEpic(commands.Cog):
                     pages.append(embed)
 
             if not pages:
-                await ctx.send("No files found")
+                await ctx.send("No files found.")
                 return
 
             paginator = Paginator()
             await paginator.start(ctx, pages=pages)
+            
+            ## Clean-up        
+            for file in glob.glob(f"{os.path.abspath('./temp/epic_data')}/e*-{_uid}.json"):
+                os.remove(file)
 
         except Exception as e:
             await error_embed.send(ctx=ctx, e=e, print_error=True, print_traceback=True)
