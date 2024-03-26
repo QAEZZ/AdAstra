@@ -30,10 +30,11 @@ Too lazy to make a proper README, here is Ad Astra's help command:
  `search`  NASA search engine
 
 
-#### To-do
+#### To-do (no particular order)
 - [ ] Upcoming rocket launches
 - [ ] Comet database lookup
 - [ ] People in space
 - [ ] Spacecraft in space lookup
+- [ ] Upcoming eclipses, maybe lookup for past eclipses (w/ images)
 
 *Feel free to make an issue or DM me with feature requests.*
