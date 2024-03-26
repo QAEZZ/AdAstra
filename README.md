@@ -3,7 +3,7 @@
 A feature-rich, space-orientated Discord bot for space-related things. \
 I'm updating this bot almost everyday.
 
-Too lazy to make a proper README, here is Ad Astra's help command:
+Too lazy to make a proper README, here is Ad Astra's help command: \
 **Client Tools** \
  `help`    this \
  `latency` get ping in ms \
