@@ -36,5 +36,6 @@ Too lazy to make a proper README, here is Ad Astra's help command:
 - [ ] People in space
 - [ ] Spacecraft in space lookup
 - [ ] Upcoming eclipses, maybe lookup for past eclipses (w/ images)
+- [ ] Space weather alerts/advisories
 
 *Feel free to make an issue or DM me with feature requests.*
