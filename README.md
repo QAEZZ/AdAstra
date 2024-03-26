@@ -31,6 +31,7 @@ Too lazy to make a proper README, here is Ad Astra's help command: \
 
 
 #### To-do (no particular order)
+- [ ] Make the animation creators async **IMPORTANT**
 - [ ] Upcoming rocket launches
 - [ ] Comet database lookup
 - [ ] People in space
