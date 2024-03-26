@@ -39,3 +39,6 @@ Too lazy to make a proper README, here is Ad Astra's help command: \
 - [ ] Space weather alerts/advisories
 
 *Feel free to make an issue or DM me with feature requests.*
+
+It's advised to self-host, but if you cannot: \
+https://discord.com/oauth2/authorize?client_id=1221308395903123486&permissions=515396455488&scope=bot
