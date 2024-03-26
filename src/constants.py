@@ -22,7 +22,7 @@ COOLDOWN_BYPASS = [COG_ACCESS]
 def TOKEN(token_name) -> str:
     """Returns contents of `client_secrets/{token_name}.key`"""
     with open(f"client_secrets/{token_name}.key", "r") as f:
-        return f.read()
+        return f.read().strip().replace(" ", "")
 
 
 HELP_DESCRIPTION = f"""
