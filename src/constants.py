@@ -43,6 +43,7 @@ HELP_DESCRIPTION = f"""
 **DSO-related Commands**
  `lookup`  get an image of a DSO
  `messier` get info on a Messier DSO
+ `platesolve` get a ps'd image
 
 **Miscellaneous Commands**
  `apod`    get astronomy photo of the day

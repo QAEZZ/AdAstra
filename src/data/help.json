@@ -66,5 +66,11 @@
       "description": "Get NASA's Astronomy Photo of The Day.",
       "usage": "apod",
       "footer": "Data provided by NASA."
+    },
+    "platesolve": {
+      "description": "Get a platesolved image of an input image. You can either upload an attachment with your command message, or provide a URL to the image you want platesolved. The RA and Dec provided must be the RA and Dec at the center of the image; in other words, the center RA and center Dec.\n\n**Alias:** `ps`\n\n**Default:** None, user must provide all arguments.\n\n**Scale Units:**\n- degwidth\n- arcminwidth\n- arcsecperpix\n\n**Example:**\n- `ps image degwidth 3.7913 24.105 2`\n- `ps url http://example.com/image.png degwidth 4.054 36.3674 4`\n\n**Usage, for uploading an image to Discord**\n```\n;ps image <scale unit> <ra> <dec> <radius>\n```",
+      "usage": "ps url <url to img> <scale unit> <ra> <dec> <radius>",
+      "footer": "Platesolving API provided by nova.astrometry.net.",
+      "image": "https://media.discordapp.net/attachments/1089094022351556729/1222002703690108948/image.png"
     }
   }

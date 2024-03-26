@@ -1,4 +1,4 @@
-from typing import Tuple, Union
+from typing import Optional, Tuple, Union
 
 import numpy as np
 from pyongc import ongc
@@ -90,16 +90,17 @@ def object_name_to_coordinates(
     return (True, ra, dec)
 
 
-def get_object_image_from_coords(fov: float, ra_hours: float, dec: float) -> str:
+def get_object_image_from_coords(fov: float, ra_hours: float, dec: float, rotation: Optional[int] = 0) -> str:
     """Get a URL to an image of the ra hours, dec coordinates.
 
     Args:
         fov (float): FOV
         ra_hours (float): RA in hours
         dec (float): Dec in decimal degrees
+        rotation (Optional[int]): Rotation of the image (0-360)
 
     Returns:
         str: The URL to the image
     """
     discord_cache_bypass = uid.gen()
-    return f"http://www.sky-map.org/imgcut?survey=DSS2&img_id=all&angle={fov}&ra={ra_hours}&de={dec}&width=800&height=800&projection=tan&interpolation=bicubic&jpeg_quality=.8&{discord_cache_bypass}={discord_cache_bypass}"
+    return f"http://www.sky-map.org/imgcut?survey=DSS2&img_id=all&angle={fov}&ra={ra_hours}&de={dec}&rotation={rotation}&width=800&height=800&projection=tan&interpolation=bicubic&jpeg_quality=.8&{discord_cache_bypass}={discord_cache_bypass}"

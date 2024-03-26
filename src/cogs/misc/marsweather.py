@@ -1,4 +1,6 @@
+import asyncio
 import os
+import time
 
 import discord
 from discord.ext import commands
@@ -38,6 +40,7 @@ class MiscMarsWeather(commands.Cog):
             
             driver = webdriver.Chrome(options=chrome_options)
             driver.get(url)
+            await asyncio.sleep(2)
             
             driver.execute_script("var slashes = document.getElementsByClassName('slash'); for (var i = slashes.length - 1; i >= 0; i--) { slashes[0].parentNode.removeChild(slashes[0]); }")
             
